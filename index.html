@@ -19,7 +19,12 @@
 </head>
 <body>
   <div class="doc-layout">
-    <aside class="sidebar">
+    <button class="mobile-menu-toggle" aria-label="Toggle menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <aside class="sidebar" id="sidebar">
       <div class="brand">
         <div class="brand-logo" aria-hidden="true">
           <!-- User-provided SVG (colors set to #7aa2ff) -->
@@ -1107,6 +1112,38 @@ Prioridad: {{priority}} | Categoría: {{category}}
 
     document.querySelectorAll('pre code.http').forEach(code => {
       code.innerHTML = highlightHttp(code.textContent || '');
+    });
+  </script>
+  
+  <script>
+    // Mobile menu toggle functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const menuToggle = document.querySelector('.mobile-menu-toggle');
+      const sidebar = document.querySelector('.sidebar');
+      
+      if (menuToggle && sidebar) {
+        menuToggle.addEventListener('click', function() {
+          menuToggle.classList.toggle('active');
+          sidebar.classList.toggle('active');
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+          if (!sidebar.contains(event.target) && !menuToggle.contains(event.target)) {
+            menuToggle.classList.remove('active');
+            sidebar.classList.remove('active');
+          }
+        });
+        
+        // Close menu when clicking on navigation links
+        const navLinks = document.querySelectorAll('.nav a');
+        navLinks.forEach(link => {
+          link.addEventListener('click', function() {
+            menuToggle.classList.remove('active');
+            sidebar.classList.remove('active');
+          });
+        });
+      }
     });
   </script>
 </body>
